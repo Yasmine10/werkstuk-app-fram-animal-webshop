@@ -1,27 +1,27 @@
 package be.ehb.backend.entities;
 
-import com.sun.istack.NotNull;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
-import java.io.Serializable;
+import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
-import java.util.HashSet;
-import java.util.Set;
 
 @Entity
-public class Product implements Serializable {
+public class Product {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @NotNull
-    private String title;
-    @NotNull
+    @NotNull(message = "Name is required")
+    private String name;
+    @NotNull(message = "Brand is required")
     private String brand;
-    @NotNull
+    @NotNull(message = "Description is required")
+    @Column(columnDefinition = "text")
     private String description;
-    @NotNull
+    @NotNull(message = "Price is required")
     private BigDecimal price;
+    @NotNull(message = "Image is required")
     private String image;
 
     @ManyToOne
@@ -32,7 +32,15 @@ public class Product implements Serializable {
     @JoinColumn(name = "animal_id", referencedColumnName = "id")
     private Animal animal;
 
+    @OneToOne(mappedBy = "product")
+    @JsonIgnore
+    private OrderItem orderItem;
+
     public Product() {
+    }
+
+    public Product(String brand) {
+        this.brand = brand;
     }
 
     public Long getId() {
@@ -43,12 +51,12 @@ public class Product implements Serializable {
         this.id = id;
     }
 
-    public String getTitle() {
-        return title;
+    public String getName() {
+        return name;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getBrand() {
@@ -97,5 +105,13 @@ public class Product implements Serializable {
 
     public void setAnimal(Animal animal) {
         this.animal = animal;
+    }
+
+    public OrderItem getOrderItem() {
+        return orderItem;
+    }
+
+    public void setOrderItem(OrderItem orderItem) {
+        this.orderItem = orderItem;
     }
 }

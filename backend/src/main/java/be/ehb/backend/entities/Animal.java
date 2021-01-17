@@ -1,33 +1,33 @@
 package be.ehb.backend.entities;
 
-import com.sun.istack.NotNull;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
-import java.io.Serializable;
-import java.util.HashSet;
+import javax.validation.constraints.NotNull;
 import java.util.Set;
 
 @Entity
-public class Animal implements Serializable {
+public class Animal {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @NotNull
+    @NotNull(message = "Name is required")
     private String name;
 
     @OneToMany(mappedBy = "animal")
-    private Set<Product> products;
-
-    @ManyToMany
-    @JoinTable(
-            name = "animal_category",
-            joinColumns = {@JoinColumn(name = "animal_id", referencedColumnName = "id", nullable = false, updatable = false)},
-            inverseJoinColumns = {@JoinColumn(name = "category_id", referencedColumnName = "id", nullable = false, updatable = false)}
-    )
+    @JsonIgnore
     private Set<Category> categories;
 
+    @OneToMany(mappedBy = "animal")
+    @JsonIgnore
+    private Set<Product> products;
+
     public Animal() {
+    }
+
+    public Animal(String name) {
+        this.name = name;
     }
 
     public Long getId() {
@@ -46,19 +46,19 @@ public class Animal implements Serializable {
         this.name = name;
     }
 
-    public Set<Product> getProducts() {
-        return products;
-    }
-
-    public void setProducts(Set<Product> products) {
-        this.products = products;
-    }
-
     public Set<Category> getCategories() {
         return categories;
     }
 
     public void setCategories(Set<Category> categories) {
         this.categories = categories;
+    }
+
+    public Set<Product> getProducts() {
+        return products;
+    }
+
+    public void setProducts(Set<Product> products) {
+        this.products = products;
     }
 }

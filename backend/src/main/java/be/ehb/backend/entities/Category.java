@@ -1,28 +1,36 @@
 package be.ehb.backend.entities;
 
-import com.sun.istack.NotNull;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
-public class Category implements Serializable {
+public class Category {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @NotNull
+    @NotNull(message = "Name is required")
     private String name;
 
+    @ManyToOne
+    @JoinColumn(name = "animal_id", referencedColumnName = "id")
+    private Animal animal;
+
     @OneToMany(mappedBy = "category")
+    @JsonIgnore
     private Set<Product> products;
 
-    @ManyToMany(mappedBy = "categories")
-    private Set<Animal> animals;
-
     public Category() {
+    }
+
+    public Category(String name) {
+        this.name = name;
     }
 
     public Long getId() {
@@ -41,6 +49,14 @@ public class Category implements Serializable {
         this.name = name;
     }
 
+    public Animal getAnimal() {
+        return animal;
+    }
+
+    public void setAnimal(Animal animal) {
+        this.animal = animal;
+    }
+
     public Set<Product> getProducts() {
         return products;
     }
@@ -49,11 +65,17 @@ public class Category implements Serializable {
         this.products = products;
     }
 
-    public Set<Animal> getAnimals() {
-        return animals;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Category)) return false;
+        Category category = (Category) o;
+        return name.equals(category.name) &&
+                animal.equals(category.animal);
     }
 
-    public void setAnimals(Set<Animal> animals) {
-        this.animals = animals;
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, animal);
     }
 }

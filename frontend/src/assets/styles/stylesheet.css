@@ -1,0 +1,53 @@
+@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&family=Raleway:wght@100;200;300;400;500;600;700&display=swap');
+
+:root {
+    --accent-color: #6A8255;
+    --primary-color: #C89465;
+    --secondary-color: #756156;
+    --light-color: #F2F2F2;
+    --dark-color: #484848;
+    --light-beige-color: #E0D1BC;
+    --white-color: #ffffff;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Quicksand', sans-serif;
+}
+
+h1 {
+    font-family: 'Raleway', sans-serif;
+    margin-bottom: 1.5rem;
+    color: var(--dark-color);
+}
+
+.page {
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+}
+
+.sidebar-wrapper {
+    display: flex;
+    width: 20%;
+}
+
+.products-wrapper {
+    display: flex;
+    flex-direction: column;
+    margin-left: 2rem;
+}
+
+.btn {
+    margin-top: 2rem;
+    padding: 0.5rem 2rem;
+    background-color: var(--secondary-color);
+    color: var(--white-color);
+    border: transparent;
+    cursor: pointer;
+    border-radius: 5px;
+    text-transform: uppercase;
+    font-size: 14px;
+}

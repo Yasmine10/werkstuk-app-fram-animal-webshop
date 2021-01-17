@@ -1,33 +1,48 @@
 package be.ehb.backend.entities;
 
-import com.sun.istack.NotNull;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotNull;
+import java.util.Objects;
+import java.util.Set;
 
 @Entity
+@Table(uniqueConstraints = {@UniqueConstraint(columnNames = "email")})
 public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @NotNull
+//    @NotNull(message = "Firstname is required")
     private String firstname;
-    @NotNull
+//    @NotNull(message = "Lastname is required")
     private String lastname;
-    @NotNull
+//    @NotNull(message = "Email is required")
+    @Email
     private String email;
-    @NotNull
+//    @NotNull(message = "Password is required")
     private String password;
-    @NotNull
-    private String street;
-    @NotNull
-    private String houseNumber;
-    @NotNull
-    private String zipcode;
-    @NotNull
-    private String city;
+
+    private String token;
+
+
+
+    @OneToMany(mappedBy = "user")
+    @JsonIgnore
+    private Set<Address> addresses;
+
+    @OneToMany(mappedBy = "user")
+    @JsonIgnore
+    private Set<Order> orders;
 
     public User() {
+    }
+
+    public User(@Email String email, String password) {
+        this.email = email;
+        this.password = password;
     }
 
     public Long getId() {
@@ -70,35 +85,40 @@ public class User {
         this.password = password;
     }
 
-    public String getStreet() {
-        return street;
+    public String getToken() {
+        return token;
     }
 
-    public void setStreet(String street) {
-        this.street = street;
+    public void setToken(String token) {
+        this.token = token;
     }
 
-    public String getHouseNumber() {
-        return houseNumber;
+    public Set<Address> getAddresses() {
+        return addresses;
     }
 
-    public void setHouseNumber(String houseNumber) {
-        this.houseNumber = houseNumber;
+    public void setAddresses(Set<Address> addresses) {
+        this.addresses = addresses;
     }
 
-    public String getZipcode() {
-        return zipcode;
+    public Set<Order> getOrders() {
+        return orders;
     }
 
-    public void setZipcode(String zipcode) {
-        this.zipcode = zipcode;
+    public void setOrders(Set<Order> orders) {
+        this.orders = orders;
     }
 
-    public String getCity() {
-        return city;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof User)) return false;
+        User user = (User) o;
+        return email.equals(user.email);
     }
 
-    public void setCity(String city) {
-        this.city = city;
+    @Override
+    public int hashCode() {
+        return Objects.hash(email);
     }
 }
