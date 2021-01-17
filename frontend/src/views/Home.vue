@@ -1,8 +1,6 @@
 <template>
   <div class="home">
     <section class="wrapper">
-      {{ token }}
-      {{ user.firstname }}
       <h1>In de kijker!</h1>
       <ul class="products-list">
         <li v-for="product in getRandomProducts()" :key="product.id" class="product-item">

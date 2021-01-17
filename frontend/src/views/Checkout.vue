@@ -4,7 +4,7 @@
     <form class="grid-wrapper" @submit.prevent="checkout">
       <div v-if="addresses.length > 0" class="flex-column">
         <div class="address-div" >
-          <div class="address-card" style="background-color: purple" v-for="item in addresses" :key="item.id" >
+          <div class="address-card" v-for="item in addresses" :key="item.id" >
             <label for="address" class="details" style="background-color: blue">
               <input type="radio" id="address">
               <!--            <p class="address-card-user">{{ user.firstname }} {{ user.lastname }}</p>-->
